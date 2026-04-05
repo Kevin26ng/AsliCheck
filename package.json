@@ -8,6 +8,7 @@
     "dev": "vite --port=3000 --host=0.0.0.0",
     "dev:server": "tsx server/index.ts",
     "build": "vite build",
+    "start:prod": "tsx server/index.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"

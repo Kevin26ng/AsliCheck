@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import Parser from 'rss-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(express.json());
@@ -489,7 +491,7 @@ async function fetchAndAnalyzeNews(category: string) {
 
 const VALID_CATEGORIES = ['all', 'politics', 'health', 'tech', 'science'];
 
-app.get('/', (_req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', name: 'AsliCheck API', mode: ollamaAvailable ? 'ai' : 'heuristic' });
 });
 
@@ -637,6 +639,16 @@ app.get('/api/img', async (req, res) => {
   } catch {
     res.status(502).send('Image fetch failed');
   }
+});
+
+// --- Serve frontend in production ---
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
+
+// SPA fallback: serve index.html for all non-API routes
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // --- Start ---

@@ -1,5 +1,4 @@
 <div align="center">
-<img width="1200" height="475" alt="AsliCheck Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 
 # AsliCheck
 
@@ -12,6 +11,12 @@
 [![Ollama](https://img.shields.io/badge/Ollama-LLM-000000?logo=ollama&logoColor=white)](https://ollama.com)
 
 </div>
+
+## Screenshots
+
+| News Feed                          | Claim Analyzer                             |
+| ---------------------------------- | ------------------------------------------ |
+| ![Feed View](assets/feed-view.png) | ![Analyzer View](assets/analyzer-view.png) |
 
 ---
 
