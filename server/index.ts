@@ -489,6 +489,10 @@ async function fetchAndAnalyzeNews(category: string) {
 
 const VALID_CATEGORIES = ['all', 'politics', 'health', 'tech', 'science'];
 
+app.get('/', (_req, res) => {
+  res.json({ status: 'ok', name: 'AsliCheck API', mode: ollamaAvailable ? 'ai' : 'heuristic' });
+});
+
 app.get('/api/news', async (req, res) => {
   try {
     const raw = String(req.query.category || 'all');
@@ -636,7 +640,7 @@ app.get('/api/img', async (req, res) => {
 });
 
 // --- Start ---
-const PORT = parseInt(process.env.SERVER_PORT || '3001', 10);
+const PORT = parseInt(process.env.PORT || process.env.SERVER_PORT || '3001', 10);
 
 checkOllama().then(() => {
   app.listen(PORT, () => {
