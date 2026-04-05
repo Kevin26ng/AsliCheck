@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  
+  --color-surface: #000000;
+  --color-surface-dark: #000000;
+  --color-surface-container: #16181c;
+  --color-surface-container-dark: #16181c;
+  --color-primary: #e7e9ea;
+  --color-secondary: #71767b;
+  --color-tertiary: #71767b;
+  --color-error: #f4212e;
+}
+
+@layer base {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    @apply font-body bg-surface text-[#e7e9ea] transition-colors duration-300;
+  }
+  
+  .dark body {
+    @apply bg-surface-dark text-[#e7e9ea];
+  }
+}
+
+.editorial-shadow {
+  box-shadow: none;
+}
+
+.dark .editorial-shadow {
+  box-shadow: none;
+}
+
