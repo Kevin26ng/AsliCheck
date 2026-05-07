@@ -17,6 +17,16 @@ export interface Post {
   sourceUrl: string;
   sourceDomain?: string;
   postType?: 'news' | 'social';
+  signals?: {
+    source: number;
+    text: number;
+    engagement: number;
+    timing: number;
+    content?: number;
+    velocity?: number;
+    comments_signal?: number;
+    author?: number;
+  };
 }
 
 export interface TrendingNews {

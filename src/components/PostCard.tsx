@@ -178,6 +178,37 @@ export default function PostCard({ post, index }: PostCardProps) {
               </div>
             )}
 
+            {/* Signal breakdown — shows which dimensions drove the verdict */}
+            {post.signals && (
+              <div className="flex items-center gap-1.5 mb-3 flex-wrap">
+                {([
+                  ['source', 'SRC'] as const,
+                  ['text', 'TXT'] as const,
+                  ['engagement', 'ENG'] as const,
+                  ['timing', 'TIME'] as const,
+                  ['content', 'AI'] as const,
+                  ['velocity', 'VEL'] as const,
+                  ['comments_signal', 'CMTS'] as const,
+                  ['author', 'AUTH'] as const,
+                ] as [keyof NonNullable<Post['signals']>, string][])
+                  .filter(([key]) => post.signals![key] != null)
+                  .map(([key, label]) => {
+                    const val = post.signals![key] as number;
+                    const color = val >= 74 ? '#00ba7c' : val >= 54 ? '#f7931a' : '#f4212e';
+                    return (
+                      <span
+                        key={key}
+                        title={`${label} signal: ${val}/100`}
+                        style={{ color, borderColor: `${color}33`, backgroundColor: `${color}0d` }}
+                        className="text-[8px] font-bold font-mono px-1.5 py-0.5 rounded border"
+                      >
+                        {label}&middot;{val}
+                      </span>
+                    );
+                  })}
+              </div>
+            )}
+
             {post.imageUrl && !imgError && (
               <div className="rounded-2xl overflow-hidden mb-3 border border-[#2f3336] cursor-pointer" onClick={() => setShowDetail(true)}>
                 <img
@@ -418,6 +449,50 @@ export default function PostCard({ post, index }: PostCardProps) {
                     <p className="text-sm text-[#e7e9ea] leading-relaxed">{post.factCheck}</p>
                   </div>
                 )}
+
+                {/* Full signal breakdown — shown only in detail modal */}
+                {post.signals && (
+                  <div className="bg-[#16181c] rounded-xl p-4 border border-[#2f3336]">
+                    <p className="text-[10px] font-bold uppercase mb-3 text-[#71767b] tracking-wider">Signal Breakdown</p>
+                    <div className="space-y-2.5">
+                      {(
+                        [
+                          ['source',          'Source Credibility',   'Editorial track record of the publisher'],
+                          ['text',            'Text Quality',         'Sensationalism, ALL-CAPS, question framing'],
+                          ['engagement',      'Engagement Pattern',   'Comment-to-like ratio authenticity'],
+                          ['timing',          'Posting Time',        '2–5 AM UTC = known bot activity window'],
+                          ['content',         'AI Semantic Score',   'Mistral headline credibility assessment'],
+                          ['velocity',        'Engagement Velocity', 'Growth rate between server poll cycles'],
+                          ['comments_signal', 'Comment Quality',     'Duplicate rate & discussion depth'],
+                          ['author',          'Author Credibility',  'Account age, karma & suspension status'],
+                        ] as [keyof NonNullable<Post['signals']>, string, string][]
+                      )
+                        .filter(([key]) => post.signals![key] != null)
+                        .map(([key, label, desc]) => {
+                          const val = post.signals![key] as number;
+                          const color = val >= 74 ? '#00ba7c' : val >= 54 ? '#f7931a' : '#f4212e';
+                          return (
+                            <div key={key}>
+                              <div className="flex items-center justify-between mb-1">
+                                <div>
+                                  <span className="text-[11px] font-semibold text-[#e7e9ea]">{label}</span>
+                                  <span className="text-[9px] text-[#71767b] ml-1.5">{desc}</span>
+                                </div>
+                                <span className="text-[11px] font-mono font-bold flex-shrink-0 ml-2" style={{ color }}>{val}%</span>
+                              </div>
+                              <div className="h-[3px] bg-[#2f3336] rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full transition-all duration-700"
+                                  style={{ width: `${val}%`, backgroundColor: color }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex gap-3 pt-2">
                   <a
                     href={post.sourceUrl}
